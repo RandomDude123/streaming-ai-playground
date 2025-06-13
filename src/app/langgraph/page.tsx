@@ -2,8 +2,14 @@
 
 import React from 'react';
 import { useChat } from '@ai-sdk/react';
+import LoadingOverlay from '@/components/LoadingOverlay';
+import ChatHeader from '@/components/ChatHeader';
+import MessageBubble from '@/components/MessageBubble';
+import ChatInput from '@/components/ChatInput';
+import LoadingMessage from '@/components/LoadingMessage';
 
 export default function LangGraphChat() {
+  const [isLoading, setIsLoading] = React.useState(true);
   const { messages, input, handleInputChange, handleSubmit, setMessages, status } = useChat({
     api: '/api/langgraph',
     id: 'langgraph-chat',
@@ -23,6 +29,7 @@ export default function LangGraphChat() {
         }
       }
     }
+    setIsLoading(false);
   }, [setMessages]);
 
   // Save messages to localStorage whenever messages change
@@ -39,63 +46,35 @@ export default function LangGraphChat() {
     }
   };
 
+  if (isLoading) {
+    return <LoadingOverlay message="Loading LangGraph chat..." color="green" />;
+  }
+
   return (
     <div className="flex flex-col w-full max-w-4xl pt-12 pb-24 mx-auto stretch bg-white min-h-screen">
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-800">LangGraph Chat</h1>
-          <p className="text-sm text-gray-600">Powered by LangGraph + Anthropic Claude with Web Search</p>
-        </div>
-        <div className="flex gap-2">
-          <a
-            href="/"
-            className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
-          >
-            Basic Chat
-          </a>
-          <button
-            onClick={clearChat}
-            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-          >
-            Clear Chat
-          </button>
-        </div>
-      </div>
+      <ChatHeader
+        currentPage="langgraph"
+        title="LangGraph Chat"
+        description="Powered by LangGraph + Anthropic Claude with Web Search"
+        onClearChat={clearChat}
+      />
       
-      {messages.map(m => (
-        <div
-          key={m.id}
-          className={`mb-4 p-4 rounded-lg min-w-[200px] ${
-            m.role === 'user'
-              ? 'bg-blue-500 text-white ml-auto max-w-[80%]'
-              : 'bg-green-100 text-gray-900 mr-auto max-w-[80%]'
-          }`}
-        >
-          <div className="text-xs font-semibold mb-1 opacity-70">
-            {m.role === 'user' ? 'You' : 'LangGraph Agent'}
-          </div>
-          <div className="whitespace-pre-wrap">{m.content}</div>
-        </div>
+      {messages.map(message => (
+        <MessageBubble key={message.id} message={message} variant="langgraph" />
       ))}
 
       {(status === 'streaming' || status === 'submitted') && (
-        <div className="mb-4 p-4 rounded-lg min-w-[200px] bg-green-100 text-gray-900 mr-auto max-w-[80%]">
-          <div className="text-xs font-semibold mb-1 opacity-70">
-            LangGraph Agent
-          </div>
-          <div className="text-gray-600">Processing...</div>
-        </div>
+        <LoadingMessage variant="langgraph" />
       )}
 
-      <form onSubmit={handleSubmit} className="fixed bottom-0 w-full max-w-4xl px-4">
-        <input
-          className="w-full p-4 mb-8 border border-gray-300 rounded-lg shadow-lg bg-white focus:outline-none focus:ring-2 focus:ring-green-500"
-          value={input}
-          placeholder="Ask me anything - I can search the web for current information..."
-          onChange={handleInputChange}
-          disabled={status === 'streaming' || status === 'submitted'}
-        />
-      </form>
+      <ChatInput
+        value={input}
+        onChange={handleInputChange}
+        onSubmit={handleSubmit}
+        placeholder="Ask me anything - I can search the web for current information..."
+        disabled={status === 'streaming' || status === 'submitted'}
+        variant="langgraph"
+      />
     </div>
   );
 }

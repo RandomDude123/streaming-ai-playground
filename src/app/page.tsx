@@ -2,8 +2,13 @@
 
 import React from 'react';
 import { useChat } from '@ai-sdk/react';
+import LoadingOverlay from '@/components/LoadingOverlay';
+import ChatHeader from '@/components/ChatHeader';
+import MessageBubble from '@/components/MessageBubble';
+import ChatInput from '@/components/ChatInput';
 
 export default function Chat() {
+  const [isLoading, setIsLoading] = React.useState(true);
   const { messages, input, handleInputChange, handleSubmit, setMessages } = useChat({
     id: 'chat',
     initialMessages: [],
@@ -22,6 +27,7 @@ export default function Chat() {
         }
       }
     }
+    setIsLoading(false);
   }, [setMessages]);
 
   // Save messages to localStorage whenever messages change
@@ -38,53 +44,30 @@ export default function Chat() {
     }
   };
 
+  if (isLoading) {
+    return <LoadingOverlay message="Loading chat..." color="blue" />;
+  }
+
   return (
     <div className="flex flex-col w-full max-w-4xl pt-12 pb-24 mx-auto stretch bg-white min-h-screen">
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-800">Basic AI Chat</h1>
-          <p className="text-sm text-gray-600">Direct Anthropic Claude streaming with Web Search</p>
-        </div>
-        <div className="flex gap-2">
-          <a
-            href="/langgraph"
-            className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
-          >
-            LangGraph Chat
-          </a>
-          <button
-            onClick={clearChat}
-            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-          >
-            Clear Chat
-          </button>
-        </div>
-      </div>
+      <ChatHeader
+        currentPage="basic"
+        title="Basic AI Chat"
+        description="Direct Anthropic Claude streaming with Web Search"
+        onClearChat={clearChat}
+      />
       
-      {messages.map(m => (
-        <div
-          key={m.id}
-          className={`mb-4 p-4 rounded-lg min-w-[200px] ${
-            m.role === 'user'
-              ? 'bg-blue-500 text-white ml-auto max-w-[80%]'
-              : 'bg-gray-100 text-gray-900 mr-auto max-w-[80%]'
-          }`}
-        >
-          <div className="text-xs font-semibold mb-1 opacity-70">
-            {m.role === 'user' ? 'You' : 'AI'}
-          </div>
-          <div className="whitespace-pre-wrap">{m.content}</div>
-        </div>
+      {messages.map(message => (
+        <MessageBubble key={message.id} message={message} variant="basic" />
       ))}
 
-      <form onSubmit={handleSubmit} className="fixed bottom-0 w-full max-w-4xl px-4">
-        <input
-          className="w-full p-4 mb-8 border border-gray-300 rounded-lg shadow-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          value={input}
-          placeholder="Ask me anything - I can search the web for current information..."
-          onChange={handleInputChange}
-        />
-      </form>
+      <ChatInput
+        value={input}
+        onChange={handleInputChange}
+        onSubmit={handleSubmit}
+        placeholder="Ask me anything - I can search the web for current information..."
+        variant="basic"
+      />
     </div>
   );
 }
