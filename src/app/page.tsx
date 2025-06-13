@@ -43,7 +43,7 @@ export default function Chat() {
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-800">Basic AI Chat</h1>
-          <p className="text-sm text-gray-600">Direct Anthropic Claude streaming</p>
+          <p className="text-sm text-gray-600">Direct Anthropic Claude streaming with Web Search</p>
         </div>
         <div className="flex gap-2">
           <a
@@ -81,7 +81,7 @@ export default function Chat() {
         <input
           className="w-full p-4 mb-8 border border-gray-300 rounded-lg shadow-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           value={input}
-          placeholder="Type your message..."
+          placeholder="Ask me anything - I can search the web for current information..."
           onChange={handleInputChange}
         />
       </form>
