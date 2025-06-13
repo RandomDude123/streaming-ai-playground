@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Chat Streaming PoC
+
+A Next.js application comparing two different approaches to AI chat streaming with web search capabilities.
+
+## Overview
+
+This project demonstrates two distinct implementations of streaming AI chat:
+
+1. **Basic Chat** (`/`) - Direct Anthropic Claude streaming using Vercel AI SDK
+2. **LangGraph Chat** (`/langgraph`) - Agent-based streaming using LangGraph + Anthropic Claude
+
+Both implementations include web search capabilities via Tavily API and persistent chat history.
+
+## Features
+
+- 🤖 **Dual Chat Interfaces** - Compare basic streaming vs agent-based reasoning
+- 🔍 **Web Search Integration** - Real-time information lookup via Tavily API
+- 💾 **Persistent Chat History** - localStorage-based message persistence
+- 🎨 **Shared Component Architecture** - Reusable UI components
+- ⚡ **Streaming Responses** - Real-time message streaming
+- 📱 **Responsive Design** - Clean, modern interface
+
+## Tech Stack
+
+- **Frontend**: Next.js 15, React, TypeScript, Tailwind CSS
+- **AI SDKs**: Vercel AI SDK, LangChain, LangGraph
+- **LLM**: Anthropic Claude 3.5 Sonnet
+- **Search**: Tavily API
+- **Package Manager**: pnpm
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js 18+
+- pnpm
+- Anthropic API key
+- Tavily API key
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   pnpm install
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Set up environment variables:
+   ```bash
+   cp .env.example .env.local
+   ```
+   
+   Add your API keys:
+   ```
+   ANTHROPIC_API_KEY=your_anthropic_api_key_here
+   TAVILY_API_KEY=your_tavily_api_key_here
+   ```
 
-## Learn More
+4. Run the development server:
+   ```bash
+   pnpm dev
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+5. Open [http://localhost:3000](http://localhost:3000)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Architecture
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Basic Chat (`/api/chat`)
+- Direct Anthropic Claude integration
+- Vercel AI SDK `streamText` with native tools
+- Simple tool calling for web search
 
-## Deploy on Vercel
+### LangGraph Chat (`/api/langgraph`)
+- LangGraph `createReactAgent` with reasoning capabilities
+- Agent-based tool selection and execution
+- Advanced streaming with `LangChainAdapter`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Shared Components
+- `LoadingOverlay` - Page loading states
+- `ChatHeader` - Navigation and controls
+- `MessageBubble` - Message display with variants
+- `ChatInput` - Input form with styling variants
+- `LoadingMessage` - Streaming indicators
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## API Keys
+
+- **Anthropic**: Get your key at [console.anthropic.com](https://console.anthropic.com)
+- **Tavily**: Get your key at [tavily.com](https://tavily.com)
+
+## Development
+
+The project uses TypeScript with strict typing and follows React best practices. Components are designed for reusability across both chat implementations.
+
+## Deployment
+
+Deploy easily on Vercel:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/streaming-poc)
+
+Remember to add your environment variables in the Vercel dashboard.
