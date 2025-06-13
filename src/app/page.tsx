@@ -9,7 +9,7 @@ import ChatInput from '@/components/ChatInput';
 
 export default function Chat() {
   const [isLoading, setIsLoading] = React.useState(true);
-  const { messages, input, handleInputChange, handleSubmit, setMessages } = useChat({
+  const { messages, input, handleInputChange, handleSubmit, setMessages, status } = useChat({
     id: 'chat',
     initialMessages: [],
   });
@@ -66,7 +66,9 @@ export default function Chat() {
         onChange={handleInputChange}
         onSubmit={handleSubmit}
         placeholder="Ask me anything - I can search the web for current information..."
+        disabled={status === 'streaming' || status === 'submitted'}
         variant="basic"
+        isLoading={status === 'streaming' || status === 'submitted'}
       />
     </div>
   );

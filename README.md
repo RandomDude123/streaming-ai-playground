@@ -79,8 +79,7 @@ Both implementations include web search capabilities via Tavily API and persiste
 - `LoadingOverlay` - Page loading states
 - `ChatHeader` - Navigation and controls
 - `MessageBubble` - Message display with variants
-- `ChatInput` - Input form with styling variants
-- `LoadingMessage` - Streaming indicators
+- `ChatInput` - Input form with styling variants and loading spinner
 
 ## API Keys
 

@@ -6,7 +6,6 @@ import LoadingOverlay from '@/components/LoadingOverlay';
 import ChatHeader from '@/components/ChatHeader';
 import MessageBubble from '@/components/MessageBubble';
 import ChatInput from '@/components/ChatInput';
-import LoadingMessage from '@/components/LoadingMessage';
 
 export default function LangGraphChat() {
   const [isLoading, setIsLoading] = React.useState(true);
@@ -63,10 +62,6 @@ export default function LangGraphChat() {
         <MessageBubble key={message.id} message={message} variant="langgraph" />
       ))}
 
-      {(status === 'streaming' || status === 'submitted') && (
-        <LoadingMessage variant="langgraph" />
-      )}
-
       <ChatInput
         value={input}
         onChange={handleInputChange}
@@ -74,6 +69,7 @@ export default function LangGraphChat() {
         placeholder="Ask me anything - I can search the web for current information..."
         disabled={status === 'streaming' || status === 'submitted'}
         variant="langgraph"
+        isLoading={status === 'streaming' || status === 'submitted'}
       />
     </div>
   );

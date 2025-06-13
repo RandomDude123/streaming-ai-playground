@@ -37,8 +37,8 @@ The codebase implements two chat systems side-by-side for comparison:
 Components follow a consistent pattern with variant support:
 - `ChatHeader` - Navigation with theme variants (blue/green)
 - `MessageBubble` - Message display with role-based styling
-- `ChatInput` - Input form with theming variants
-- `LoadingMessage` and `LoadingOverlay` - Loading states
+- `ChatInput` - Input form with theming variants and loading spinner
+- `LoadingOverlay` - Page loading states
 
 ### State Management
 - Local React state with hooks
@@ -101,3 +101,29 @@ TAVILY_API_KEY=your_tavily_api_key
 - No test framework is currently configured
 - Verify both chat implementations work after changes
 - Test streaming behavior and tool functionality
+
+## Documentation Maintenance
+
+### Self-Updating CLAUDE.md
+When making significant architectural changes or adding new development patterns:
+
+1. **Update this CLAUDE.md file** to reflect new patterns, components, or workflows
+2. **Add new development commands** if build/test/deployment processes change
+3. **Document new environment variables** or configuration requirements
+4. **Update component architecture** section when adding/removing shared components
+5. **Revise technical patterns** when streaming or API integration approaches change
+
+### Keeping README.md in Sync
+When making changes that affect the user-facing documentation:
+
+1. **Update component descriptions** in README.md's "Shared Components" section
+2. **Sync technical stack changes** when adding/removing major dependencies
+3. **Update feature descriptions** if core functionality changes
+4. **Maintain consistency** between CLAUDE.md's technical details and README.md's user-facing descriptions
+5. **Verify deployment instructions** remain accurate after configuration changes
+
+Key areas to sync:
+- Component list and descriptions
+- Tech stack dependencies
+- API integration details
+- Development setup instructions
